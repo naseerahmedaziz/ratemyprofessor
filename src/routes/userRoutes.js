@@ -4,10 +4,10 @@ const userRouter = express.Router();
 //this is working now as well
 userRouter.post("/signup", signup);
 userRouter.post("/signin", signin);
-// userRouter.get("/account", viewAccount);
 userRouter.patch("/updateAccount", updateAccount);
 
 // New route for deleting an account
+// userRouter.get("/account", viewAccount);
 // userRouter.delete("/account", deleteAccount);
 
 module.exports = userRouter;

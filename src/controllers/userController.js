@@ -1,7 +1,7 @@
 const userModel = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const SECRET_KEY = "John Doe";
+const SECRET_KEY = 'MY_SECRET_KEY';
 
 //this is working now as well
 const signup = async (req, res) => {
@@ -29,7 +29,7 @@ const signup = async (req, res) => {
     // Create a JWT token for the new user
     const token = jwt.sign(
       { email: result.email, id: result.id },
-      "MY_SECRET_KEY"
+      SECRET_KEY
     );
 
     // Return the user and token in the response
