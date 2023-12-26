@@ -1,5 +1,6 @@
 const ReviewModel = require("../models/review");
 const Teacher = require("../models/teacher");
+const mongoose= require("mongoose");
 
 //createReview is working properly and saving review inside the teacher id 
 const createReview = async (req, res) => {
@@ -78,14 +79,24 @@ const updateReview = async (req, res) => {
   }
 };
 
-
 const deleteReview = async (req, res) => {
-  const { reviewId } = req.params;
+  const { reviewId } = req.body; // Extract reviewId from the request body
 
   try {
-    const deletedReview = await ReviewModel.findByIdAndRemove(reviewId);
+    console.log("Deleting review with ID:", reviewId);
 
-    if (!deletedReview) {
+    // Correctly convert the reviewId to a MongoDB ObjectId
+    const reviewObjectId = new mongoose.Types.ObjectId(reviewId);
+
+    // Find the teacher with the review and pull (remove) the review from the array
+    const updateResult = await Teacher.updateOne(
+      { "reviews._id": reviewObjectId },
+      { $pull: { reviews: { _id: reviewObjectId } } }
+    );
+
+    console.log("Update result:", updateResult);
+
+    if (updateResult.matchedCount === 0) {
       return res.status(404).json({ message: "Review not found" });
     }
 

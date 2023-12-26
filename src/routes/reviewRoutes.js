@@ -9,7 +9,8 @@ const reviewRouter = express.Router();
 
 reviewRouter.post("/createReview", createReview);
 reviewRouter.get('/:teacherId', readReviews);
-reviewRouter.patch('/update/:teacherId/:reviewId', updateReview);
+reviewRouter.patch('/update/teacher/:teacherId/review/:reviewId', updateReview);
+reviewRouter.post("/deleteReview", deleteReview);
 
 // reviewRouter.put("/:reviewId", updateReview);
 // reviewRouter.delete("/:reviewId", deleteReview);

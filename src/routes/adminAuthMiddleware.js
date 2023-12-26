@@ -1,16 +1,24 @@
-
 // This middleware will be used to authenticate the admin user before allowing them to access the admin routes.
+const jwt = require('jsonwebtoken');
+
+const generateToken = () => {
+    const payload = {
+        user: 'admin@admin.com', 
+    };
+
+    return jwt.sign(payload, 'MY_SECRET_KEY');
+};
 
 const adminAuthMiddleware = (req, res, next) => {
-  const { username, password } = req.body; // Get the username and password from the request body
+  const { email, password } = req.body;
 
-  // Check if the username and password are admin and adminpassword respectively
-  if (username === "admin" && password === "adminpassword") {
-    next(); // If yes, proccede to admin routes
+  if (email === 'admin@admin.com' && password === '12345678') {
+      const token = generateToken();
+      res.json({ token });
   } else {
-    res.status(401).json({ message: "Unauthorized access" });
+      res.status(401).json({ message: 'Authentication failed' });
   }
 };
 
-module.exports = adminAuthMiddleware;
+module.exports = { adminAuthMiddleware };
 
