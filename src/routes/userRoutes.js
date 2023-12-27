@@ -8,7 +8,6 @@ const {
 } = require("../controllers/userController");
 const { findTeachers } = require("../controllers/adminController");
 const userRouter = express.Router();
-const mongoose = require("mongoose");
 
 const SECRET_KEY = "MY_SECRET_KEY";
 

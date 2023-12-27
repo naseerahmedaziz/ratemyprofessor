@@ -76,12 +76,13 @@ const findTeachers = async (req, res) => {
 
 const updateTeacher = async (req, res) => {
   const { teacherId } = req.params;
-  const { name, subject } = req.body;
+  const { name, subject, university } = req.body;
 
   try {
     const updatedTeacher = await TeacherModel.findByIdAndUpdate(teacherId, {
       name,
       subject,
+      university,
     });
 
     if (!updatedTeacher) {
@@ -94,7 +95,6 @@ const updateTeacher = async (req, res) => {
     res.status(500).json({ message: "Error updating the teacher" });
   }
 };
-
 
 module.exports = {
   createTeacher,
