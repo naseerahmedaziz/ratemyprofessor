@@ -2,10 +2,15 @@ const TeacherModel = require("../models/teacher");
 
 //this is working now as well
 const createTeacher = async (req, res) => {
-  const { name, subject, email } = req.body;
+  const { name, subject, email, university } = req.body;
 
   try {
-    const newTeacher = await TeacherModel.create({ name, subject, email });
+    const newTeacher = await TeacherModel.create({ 
+      name, 
+      subject, 
+      email,
+      university
+    });
     res.status(201).json(newTeacher);
   } catch (error) {
     console.error(error);
@@ -29,12 +34,9 @@ const findTeachers = async (req, res) => {
 
   try {
     let query = {};
-
-    // If a search query is provided, use it to filter teachers by name
     if (searchQuery) {
-      query.name = { $regex: searchQuery, $options: "i" }; // Case-insensitive regex search
+      query.name = { $regex: searchQuery, $options: "i" }; 
     }
-
     const teachers = await TeacherModel.find(query);
     res.status(200).json(teachers);
   } catch (error) {

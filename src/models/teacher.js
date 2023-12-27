@@ -30,7 +30,15 @@ const TeacherSchema = new mongoose.Schema({
     unique: true,
     sparse: true // This makes the unique index only consider documents where the field exists
   },
-  reviews: [ReviewSchema] // Array of review subdocuments
+  reviews: [ReviewSchema], // Array of review subdocuments
+  image: {
+    type: String,
+    default: 'https://picsum.photos/200/300' // Default image URL
+  },
+  university: {
+    type: String,
+    required: true
+  },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Teacher', TeacherSchema);
