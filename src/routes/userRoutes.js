@@ -6,7 +6,10 @@ const {
   updateAccount,
   deleteTeacher,
 } = require("../controllers/userController");
-const { findTeachers } = require("../controllers/adminController");
+const {
+  findTeachers,
+  findTeacherById,
+} = require("../controllers/adminController");
 const userRouter = express.Router();
 
 const SECRET_KEY = "MY_SECRET_KEY";
@@ -39,6 +42,7 @@ userRouter.post("/signin", signin);
 userRouter.patch("/updateAccount/:id", verifyToken, updateAccount);
 userRouter.get("/findTeachers", verifyToken, findTeachers);
 userRouter.post("/deleteTeacher", verifyToken, deleteTeacher);
+userRouter.get("/findTeacherByID/:teacherId", verifyToken, findTeacherById);
 
 // New route for deleting an account
 // userRouter.get("/account", viewAccount);

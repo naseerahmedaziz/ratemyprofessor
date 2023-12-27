@@ -1,4 +1,5 @@
 const TeacherModel = require("../models/teacher");
+const mongoose = require("mongoose");
 
 //this is working now as well
 const createTeacher = async (req, res) => {
@@ -96,10 +97,34 @@ const updateTeacher = async (req, res) => {
   }
 };
 
+const findTeacherById = async (req, res) => {
+  const { teacherId } = req.params; // Extract teacherId from the route parameters
+
+  try {
+    // Correctly convert the teacherId to a MongoDB ObjectId
+    const teacherObjectId = new mongoose.Types.ObjectId(teacherId);
+
+    // Find the teacher by their ID
+    const teacher = await TeacherModel.findById(teacherObjectId);
+
+    if (!teacher) {
+      return res.status(404).json({ message: "Teacher not found" });
+    }
+
+    // Return the teacher data
+    res.status(200).json(teacher);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error retrieving teacher data" });
+  }
+};
+
+
 module.exports = {
   createTeacher,
   getTeachers,
   findTeachers,
   updateTeacher,
-  editTeacher
+  editTeacher,
+  findTeacherById
 };
