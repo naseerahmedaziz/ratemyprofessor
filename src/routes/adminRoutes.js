@@ -6,6 +6,7 @@ const {
   updateTeacher,
   deleteTeacher,
   findTeachers,
+  editTeacher,
 } = require("../controllers/adminController");
 const adminRouter = express.Router();
 const { adminAuthMiddleware } = require("./adminAuthMiddleware");
@@ -20,7 +21,7 @@ const verifyToken = (req, res, next) => {
   }
 
   const bearer = bearerHeader.split(" ");
-  const bearerToken = bearer[1]; // Get the token part
+  const bearerToken = bearer[1]; 
 
   try {
     const decoded = jwt.verify(bearerToken, SECRET_KEY);
@@ -33,15 +34,13 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-// Define admin-specific routes here
 adminRouter.post("/adminLogin", adminAuthMiddleware);
-adminRouter.post("/teachers", verifyToken, createTeacher);
+adminRouter.post("/addTeacher", verifyToken, createTeacher);
+adminRouter.patch("/editTeacher/:id", verifyToken, editTeacher);
 //update teacher with jwt
 
-
 //find teacher should be in user flow
-adminRouter.get("/getTeachers", getTeachers);
-adminRouter.get("/findTeachers", findTeachers);
+adminRouter.get("/getTeachers", verifyToken, getTeachers);
 // adminRouter.put("/teachers/:teacherId", updateTeacher);
 // adminRouter.delete("/teachers/:teacherId", deleteTeacher);
 

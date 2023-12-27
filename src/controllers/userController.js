@@ -77,38 +77,42 @@ const signin = async (req, res) => {
 //     res.status(500).json({ message: "Error" });
 //   }
 // };
-
 const updateAccount = async (req, res) => {
-  // const token = req.headers.authorization;
-  // if (!token) {
-  //   return res.status(401).json({ message: "Unauthorized: Token missing" });
-  // }
+  const { id } = req.params; // assuming the user's ID is passed as a URL parameter
+  const { firstName, lastName, email } = req.body;
+
   try {
-    // const decodedData = jwt.verify(token, SECRET_KEY);
-    const userId = decodedData.id;
+    // Find the user by ID
+    const user = await userModel.findById(id);
 
-    if (req.body._id !== userId) {
-      return res.status(403).json({ message: "Unauthorized access" });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
 
-    if (req.body.email && !emailRegex.test(req.body.email)) {
-      return res.status(400).json({ message: "Invalid email format" });
+    // Check if the email is changing and, if so, if it's taken by another user
+    if (email && email !== user.email) {
+      const existingUser = await userModel.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({ message: "Email already in use" });
+      }
     }
 
-    if (req.body.password && req.body.password.length < 8) {
-      return res
-        .status(400)
-        .json({ message: "Password must be at least 8 characters long" });
-    }
+    // Update user details
+    user.firstName = firstName || user.firstName;
+    user.lastName = lastName || user.lastName;
+    user.email = email || user.email;
 
-    await userModel.findByIdAndUpdate(userId, req.body);
+    // Save the updated user
+    const updatedUser = await user.save();
 
-    res.status(200).json({ message: "Account details updated successfully" });
+    // Return the updated user details
+    res.status(200).json(updatedUser);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Error" });
+    res.status(500).json({ message: "Error updating user details" });
   }
 };
+
 
 const deleteAccount = async (req, res) => {
   const token = req.headers.authorization;

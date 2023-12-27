@@ -18,6 +18,35 @@ const createTeacher = async (req, res) => {
   }
 };
 
+const editTeacher = async (req, res) => {
+  const { id } = req.params;  // Assuming the teacher's ID is passed as a URL parameter
+  const { name, subject, email, university } = req.body;
+
+  try {
+    // Find the teacher by ID
+    const teacher = await TeacherModel.findById(id);
+
+    if (!teacher) {
+      return res.status(404).json({ message: "Teacher not found" });
+    }
+
+    // Update teacher details
+    teacher.name = name || teacher.name;
+    teacher.subject = subject || teacher.subject;
+    teacher.email = email || teacher.email;
+    teacher.university = university || teacher.university;
+
+    // Save the updated teacher
+    const updatedTeacher = await teacher.save();
+
+    // Return the updated teacher details
+    res.status(200).json(updatedTeacher);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error updating the teacher" });
+  }
+};
+
 //this is working now as well
 const getTeachers = async (req, res) => {
   try {
@@ -89,4 +118,5 @@ module.exports = {
   findTeachers,
   updateTeacher,
   deleteTeacher,
+  editTeacher
 };
