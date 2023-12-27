@@ -67,7 +67,7 @@ const signin = async (req, res) => {
 
 const updateAccount = async (req, res) => {
   const { id } = req.params; // assuming the user's ID is passed as a URL parameter
-  const { firstName, lastName, email } = req.body;
+  const { firstName, lastName, email, university } = req.body; // Include the 'university' field
 
   try {
     // Find the user by ID
@@ -90,6 +90,9 @@ const updateAccount = async (req, res) => {
     user.lastName = lastName || user.lastName;
     user.email = email || user.email;
 
+    // Add or update the 'university' field
+    user.university = university || user.university;
+
     // Save the updated user
     const updatedUser = await user.save();
 
@@ -100,6 +103,7 @@ const updateAccount = async (req, res) => {
     res.status(500).json({ message: "Error updating user details" });
   }
 };
+
 
 const deleteTeacher = async (req, res) => {
   const { userId } = req.body; // Extract userId from the request body

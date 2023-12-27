@@ -18,6 +18,9 @@ const UserSchema = mongoose.Schema({
     required: true,
     unique: true,
   },
+  university: { 
+    type: String, 
+  },
 }, { timestamps: true });
 
 module.exports = mongoose.model("User", UserSchema);
