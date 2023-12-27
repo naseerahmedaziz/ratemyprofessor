@@ -2,6 +2,8 @@ const userModel = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const SECRET_KEY = 'MY_SECRET_KEY';
+const mongoose = require("mongoose");
+const teacher = require("../models/teacher");
 
 //this is working now as well
 const signup = async (req, res) => {
@@ -63,20 +65,6 @@ const signin = async (req, res) => {
   }
 };
 
-// const viewAccount = async (req, res) => {
-//   const token = req.headers.authorization;
-//   try {
-//     const decodedData = jwt.verify(token, SECRET_KEY);
-//     const user = await userModel.findById(decodedData.id);
-//     if (!user) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
-//     res.status(200).json(user);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: "Error" });
-//   }
-// };
 const updateAccount = async (req, res) => {
   const { id } = req.params; // assuming the user's ID is passed as a URL parameter
   const { firstName, lastName, email } = req.body;
@@ -113,29 +101,33 @@ const updateAccount = async (req, res) => {
   }
 };
 
+const deleteTeacher = async (req, res) => {
+  const { userId } = req.body; // Extract userId from the request body
 
-const deleteAccount = async (req, res) => {
-  const token = req.headers.authorization;
   try {
-    const decodedData = jwt.verify(token, SECRET_KEY);
-    const userId = decodedData.id;
+    console.log("Deleting account with ID:", userId);
 
-    console.log(`Deleting user with ID: ${userId}`);
+    // Correctly convert the userId to a MongoDB ObjectId
+    const userObjectId = new mongoose.Types.ObjectId(userId);
 
     // Delete the user's account from the database
-    const deletedUser = await userModel.findByIdAndRemove(userId);
+    const deleteResult = await teacher.updateOne(
+      { "_id": userObjectId },
+      { $set: { isActive: false } } // Assuming soft delete by setting isActive flag to false
+    );
 
-    console.log(`Deleted user: ${JSON.stringify(deletedUser)}`);
+    console.log("Delete result:", deleteResult);
 
-    if (!deletedUser) {
+    if (deleteResult.matchedCount === 0) {
       return res.status(404).json({ message: "User not found" });
     }
 
     res.status(200).json({ message: "Account deleted successfully" });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Error" });
+    console.error(error);
+    res.status(500).json({ message: "Error deleting the account" });
   }
 };
 
-module.exports = { signup, signin, updateAccount, deleteAccount };
+
+module.exports = { signup, signin, updateAccount, deleteTeacher };

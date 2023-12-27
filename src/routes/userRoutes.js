@@ -3,12 +3,12 @@ const jwt = require("jsonwebtoken");
 const {
   signup,
   signin,
-  viewAccount,
   updateAccount,
-  deleteAccount,
+  deleteTeacher
 } = require("../controllers/userController");
 const { findTeachers } = require("../controllers/adminController");
 const userRouter = express.Router();
+const mongoose = require("mongoose");
 
 const SECRET_KEY = "MY_SECRET_KEY";
 
@@ -39,6 +39,7 @@ userRouter.post("/signup", signup);
 userRouter.post("/signin", signin);
 userRouter.patch("/updateAccount/:id", verifyToken, updateAccount);
 userRouter.get("/findTeachers", verifyToken, findTeachers);
+userRouter.post('/deleteTeacher', deleteTeacher);
 
 // New route for deleting an account
 // userRouter.get("/account", viewAccount);

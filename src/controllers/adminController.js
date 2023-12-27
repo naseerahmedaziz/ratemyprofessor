@@ -95,28 +95,11 @@ const updateTeacher = async (req, res) => {
   }
 };
 
-const deleteTeacher = async (req, res) => {
-  const { teacherId } = req.params;
-
-  try {
-    const deletedTeacher = await TeacherModel.findByIdAndRemove(teacherId);
-
-    if (!deletedTeacher) {
-      return res.status(404).json({ message: "Teacher not found" });
-    }
-
-    res.status(200).json({ message: "Teacher deleted successfully" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error deleting the teacher" });
-  }
-};
 
 module.exports = {
   createTeacher,
   getTeachers,
   findTeachers,
   updateTeacher,
-  deleteTeacher,
   editTeacher
 };

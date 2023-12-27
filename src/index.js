@@ -4,7 +4,9 @@ const adminRouter = require("./routes/adminRoutes");
 const reviewRouter = require("./routes/reviewRoutes");
 const app = express();
 const mongoose = require("mongoose");
+const cors = require("cors")
 
+app.use(cors());
 app.use(express.json());
 
 app.use("/users", userRouter);
