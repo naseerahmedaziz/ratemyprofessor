@@ -4,7 +4,7 @@ const {
   signup,
   signin,
   updateAccount,
-  deleteTeacher
+  deleteTeacher,
 } = require("../controllers/userController");
 const { findTeachers } = require("../controllers/adminController");
 const userRouter = express.Router();
@@ -39,7 +39,7 @@ userRouter.post("/signup", signup);
 userRouter.post("/signin", signin);
 userRouter.patch("/updateAccount/:id", verifyToken, updateAccount);
 userRouter.get("/findTeachers", verifyToken, findTeachers);
-userRouter.post('/deleteTeacher', deleteTeacher);
+userRouter.post("/deleteTeacher", verifyToken, deleteTeacher);
 
 // New route for deleting an account
 // userRouter.get("/account", viewAccount);
