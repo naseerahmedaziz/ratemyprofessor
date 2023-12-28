@@ -20,7 +20,7 @@ const createTeacher = async (req, res) => {
 };
 
 const editTeacher = async (req, res) => {
-  const { id } = req.params;  // Assuming the teacher's ID is passed as a URL parameter
+  const { id } = req.params;  
   const { name, subject, email, university } = req.body;
 
   try {
@@ -31,16 +31,14 @@ const editTeacher = async (req, res) => {
       return res.status(404).json({ message: "Teacher not found" });
     }
 
-    // Update teacher details
+    // update
     teacher.name = name || teacher.name;
     teacher.subject = subject || teacher.subject;
     teacher.email = email || teacher.email;
     teacher.university = university || teacher.university;
 
-    // Save the updated teacher
     const updatedTeacher = await teacher.save();
 
-    // Return the updated teacher details
     res.status(200).json(updatedTeacher);
   } catch (error) {
     console.error(error);
@@ -60,7 +58,7 @@ const getTeachers = async (req, res) => {
 };
 
 const findTeachers = async (req, res) => {
-  const searchQuery = req.query.search; // Get the search query from the request's query string
+  const searchQuery = req.query.search; 
 
   try {
     let query = {};
@@ -98,20 +96,18 @@ const updateTeacher = async (req, res) => {
 };
 
 const findTeacherById = async (req, res) => {
-  const { teacherId } = req.params; // Extract teacherId from the route parameters
+  const { teacherId } = req.params; 
 
   try {
-    // Correctly convert the teacherId to a MongoDB ObjectId
+
     const teacherObjectId = new mongoose.Types.ObjectId(teacherId);
 
-    // Find the teacher by their ID
     const teacher = await TeacherModel.findById(teacherObjectId);
 
     if (!teacher) {
       return res.status(404).json({ message: "Teacher not found" });
     }
 
-    // Return the teacher data
     res.status(200).json(teacher);
   } catch (error) {
     console.error(error);

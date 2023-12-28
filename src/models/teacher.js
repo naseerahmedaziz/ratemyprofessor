@@ -4,7 +4,7 @@ const ReviewSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'User' // Assuming you have a User model
+    ref: 'User' 
   },
   rating: {
     type: Number,
@@ -28,12 +28,12 @@ const TeacherSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
-    sparse: true // This makes the unique index only consider documents where the field exists
+    sparse: true 
   },
-  reviews: [ReviewSchema], // Array of review subdocuments
+  reviews: [ReviewSchema], 
   image: {
     type: String,
-    default: 'https://picsum.photos/200/300' // Default image URL
+    default: 'https://picsum.photos/200/300' 
   },
   university: {
     type: String,

@@ -44,8 +44,4 @@ userRouter.get("/findTeachers", verifyToken, findTeachers);
 userRouter.post("/deleteTeacher", verifyToken, deleteTeacher);
 userRouter.get("/findTeacherByID/:teacherId", verifyToken, findTeacherById);
 
-// New route for deleting an account
-// userRouter.get("/account", viewAccount);
-// userRouter.delete("/account", deleteAccount);
-
 module.exports = userRouter;

@@ -22,20 +22,18 @@ const signup = async (req, res) => {
 
     // Create a new user with the provided data
     const result = await userModel.create({
-      firstName: firstName, // Use the correct variable name here
+      firstName: firstName, 
       lastName: lastName,
       email: email,
       password: hashedPassword,
     });
 
-    // Create a JWT token for the new user
     const token = jwt.sign(
       { email: result.email, id: result.id },
       SECRET_KEY
     );
 
-    // Return the user and token in the response
-    res.status(201).json({ user: result, token: token });
+    res.status(200).json({ user: result, token: token });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error in signup" });
@@ -58,7 +56,7 @@ const signin = async (req, res) => {
       { email: existingUser.email, id: existingUser._id },
       SECRET_KEY
     );
-    res.status(201).json({ user: existingUser, token: token });
+    res.status(200).json({ user: existingUser, token: token });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error" });
@@ -66,8 +64,8 @@ const signin = async (req, res) => {
 };
 
 const updateAccount = async (req, res) => {
-  const { id } = req.params; // assuming the user's ID is passed as a URL parameter
-  const { firstName, lastName, email, university } = req.body; // Include the 'university' field
+  const { id } = req.params; 
+  const { firstName, lastName, email, university } = req.body; 
 
   try {
     // Find the user by ID
@@ -85,18 +83,14 @@ const updateAccount = async (req, res) => {
       }
     }
 
-    // Update user details
     user.firstName = firstName || user.firstName;
     user.lastName = lastName || user.lastName;
     user.email = email || user.email;
 
-    // Add or update the 'university' field
     user.university = university || user.university;
 
-    // Save the updated user
     const updatedUser = await user.save();
 
-    // Return the updated user details
     res.status(200).json(updatedUser);
   } catch (error) {
     console.log(error);
@@ -106,18 +100,18 @@ const updateAccount = async (req, res) => {
 
 
 const deleteTeacher = async (req, res) => {
-  const { userId } = req.body; // Extract userId from the request body
+  const { userId } = req.body;
 
   try {
     console.log("Deleting account with ID:", userId);
 
-    // Correctly convert the userId to a MongoDB ObjectId
+
     const userObjectId = new mongoose.Types.ObjectId(userId);
 
-    // Delete the user's account from the database
+
     const deleteResult = await teacher.updateOne(
       { "_id": userObjectId },
-      { $set: { isActive: false } } // Assuming soft delete by setting isActive flag to false
+      { $set: { isActive: false } } 
     );
 
     console.log("Delete result:", deleteResult);

@@ -12,8 +12,6 @@ reviewRouter.get('/:teacherId', readReviews);
 reviewRouter.patch('/update/teacher/:teacherId/review/:reviewId', updateReview);
 reviewRouter.post("/deleteReview", deleteReview);
 
-// reviewRouter.put("/:reviewId", updateReview);
-// reviewRouter.delete("/:reviewId", deleteReview);
 
 module.exports = reviewRouter;
 

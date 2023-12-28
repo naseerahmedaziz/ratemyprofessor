@@ -41,7 +41,5 @@ adminRouter.patch("/editTeacher/:id", verifyToken, editTeacher);
 
 //find teacher should be in user flow
 adminRouter.get("/getTeachers", verifyToken, getTeachers);
-// adminRouter.put("/teachers/:teacherId", updateTeacher);
-// adminRouter.delete("/teachers/:teacherId", deleteTeacher);
 
 module.exports = adminRouter;

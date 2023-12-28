@@ -24,25 +24,22 @@ const createReview = async (req, res) => {
 const readReviews = async (req, res) => {
   const teacherId = req.params.teacherId;
   try {
-    // Find the teacher by ID and retrieve only the 'reviews' field
     const teacher = await Teacher.findById(teacherId).select('reviews');
     
     if (!teacher) {
-      // Send a 404 Not Found response
+
       res.status(404).json({ message: 'Teacher not found' });
     } else {
-      // Send the reviews in the response
       res.status(200).json(teacher.reviews);
     }
   } catch (error) {
     console.error(error);
-    // Send a 500 Internal Server Error response
     res.status(500).json({ message: 'An error occurred' });
   }
 };
 
 const updateReview = async (req, res) => {
-  const { teacherId, reviewId } = req.params; // Assuming you pass teacherId and reviewId as route parameters
+  const { teacherId, reviewId } = req.params; 
   const { rating, comment } = req.body;
 
   try {
@@ -69,7 +66,6 @@ const updateReview = async (req, res) => {
       return res.status(404).json({ message: "Teacher or review not found" });
     }
 
-    // Find the updated review in the array to return it
     const updatedReview = updatedTeacher.reviews.find(review => review._id.toString() === reviewId);
 
     res.status(200).json(updatedReview || { message: "Review not found" });
@@ -80,15 +76,15 @@ const updateReview = async (req, res) => {
 };
 
 const deleteReview = async (req, res) => {
-  const { reviewId } = req.body; // Extract reviewId from the request body
+  const { reviewId } = req.body; 
 
   try {
     console.log("Deleting review with ID:", reviewId);
 
-    // Correctly convert the reviewId to a MongoDB ObjectId
+
     const reviewObjectId = new mongoose.Types.ObjectId(reviewId);
 
-    // Find the teacher with the review and pull (remove) the review from the array
+    // find the teacher with the review and remove the review from the array
     const updateResult = await Teacher.updateOne(
       { "reviews._id": reviewObjectId },
       { $pull: { reviews: { _id: reviewObjectId } } }
